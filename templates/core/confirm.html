@@ -1,0 +1,218 @@
+{% extends 'partials/base.html' %} 
+{% load static %} 
+{% block content %}
+
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Confirm Your PC Selection</title>
+      <!-- Include any necessary CSS -->
+      <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+        }
+        .col-lg-5 {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .border {
+            border: 1px solid #ccc;
+            padding: 40px;
+        }
+        .cart-totals {
+            margin-left: 30px;
+            margin-bottom: 50px;
+        }
+        .heading-2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .mb-10 {
+            margin-bottom: 10px;
+        }
+        .mb-30 {
+            margin-bottom: 30px;
+        }
+        .mt-30 {
+            margin-top: 30px;
+        }
+        .mb-40 {
+            margin-bottom: 40px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .btn-fill-out {
+            width: 100%;
+            text-align: center;
+            background-color: #007bff; 
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+            margin-top: 30px;
+            background-color: #3BB77E;
+        }
+        .payment {
+            margin-left: 30px;
+        }
+        .w-50 {
+            width: 50%;
+        }
+        .product {
+            display: inline-block; /* Display products inline */
+            width: calc(33.33% - 20px); 
+            margin: 10px; 
+            vertical-align: top; 
+            box-sizing: border-box; 
+            text-align: center; 
+          }
+          
+          .product img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 10px; 
+          }
+          
+          .product span {
+            display: block; 
+          }
+          
+          .subtotal {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: right; 
+            font-size: 18px; 
+            color: #333; 
+            border-top: 2px solid #007bff; 
+            padding-top: 10px; 
+          }
+          
+          .subtotal span {
+            color: #007bff; 
+          }
+    </style>
+    </head>
+    <body>
+      <h1>Confirm Your PC's Hardware Selection</h1>
+
+      <div class="col-lg-5">
+        <div class="border p-40 cart-totals ml-30 mb-50">
+          <h1 class="heading-2 mb-10">Confirmation</h1>
+
+          <div id="selectedProducts">
+            <!-- Selected products will be displayed here -->
+          </div>
+
+          <div class="subtotal">
+            Subtotal: RM<span id="subtotal">0.00</span>
+          </div>
+          <div class="divider-2 mb-30"></div>
+          <a href="{% url 'core:customize_pc' %}" class="btn btn-fill-out btn-block mt-30 mb-40">Go back to Customize</a>
+
+          <div class="payment ml-30">
+            <h4 class="mb-30">Payment</h4>
+
+            <div class="w-50">
+                {{ paypal_payment_button2.render }}
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Include any necessary JavaScript -->
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const selectedProductsContainer = document.getElementById('selectedProducts')
+          const subtotalElement = document.getElementById('subtotal')
+        
+          // Function to fetch and render selected products with images and calculate subtotal
+          async function fetchAndRenderSelectedProducts(productIds) {
+            if (!productIds || productIds.length === 0) {
+              console.error('No selected products in local storage.')
+              return
+            }
+        
+            
+            // Filter out any empty strings from the productIds array
+            const validProductIds = productIds.filter((id) => id)
+            console.log('Valid product IDs:', validProductIds)
+        
+            if (validProductIds.length === 0) {
+              console.error('No valid product IDs in local storage.')
+              return
+            }
+        
+            selectedProductsContainer.innerHTML = ''
+            let subtotal = 0
+        
+            for (const productId of validProductIds) {
+              try {
+                console.log(`Fetching product details for ID: ${productId}`)
+                const response = await fetch(`/api/product/${productId}/`)
+                if (!response.ok) {
+                  throw new Error(`HTTP error! status: ${response.status}`)
+                }
+                const product = await response.json()
+                console.log(`Product details received:`, product)
+        
+                if (product && product.image_url && product.title && product.price) {
+                  const productDiv = document.createElement('div')
+                  productDiv.classList.add('product')
+        
+                  const image = document.createElement('img')
+                  image.src = product.image_url
+                  productDiv.appendChild(image)
+        
+                  const title = document.createElement('span')
+                  title.textContent = product.title
+                  productDiv.appendChild(title)
+        
+                  const price = document.createElement('span')
+                  price.textContent = `RM${parseFloat(product.price).toFixed(2)}`
+                  productDiv.appendChild(price)
+        
+                  selectedProductsContainer.appendChild(productDiv)
+        
+                  subtotal += parseFloat(product.price)
+                } else {
+                  console.error('Product data is incomplete or not available', product)
+                }
+              } catch (error) {
+                console.error('Error fetching product details', error)
+              }
+            }
+        
+            subtotalElement.textContent = `${subtotal.toFixed(2)}`
+          }
+        
+          // Retrieve product IDs from local storage and fetch details
+          const storedData = localStorage.getItem('selectedProducts')
+          if (!storedData) {
+            console.error('No selectedProducts found in local storage.')
+          } else {
+            const productIds = JSON.parse(storedData)
+            fetchAndRenderSelectedProducts(productIds).catch(console.error)
+          }
+        })
+        
+      </script>
+    </body>
+  </html>
+{% endblock %}

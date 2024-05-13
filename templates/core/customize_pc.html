@@ -1,0 +1,542 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Customize PC</title>
+      <!-- Include any necessary CSS -->
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+        }
+        h1 {
+          text-align: center;
+        }
+        form.customizeForm {
+
+          margin: 0 auto;
+          padding: 20px;
+        }
+        select {
+          width: 100%;
+          padding: 10px;
+          margin-bottom: 15px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+        }
+        #budgetDisplay {
+          margin-top: 20px;
+          font-weight: bold;
+        }
+        #totalBudget {
+          color: #007bff;
+        }
+        button.customizeBtn{
+            display: block;
+            width: 50%;
+            padding: 10px;
+            margin:auto;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+        button.customizeBtn1 {
+          display: block;
+          width: 100%;
+          padding: 10px;
+          margin-top: 20px;
+          margin-bottom: 50px;
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+        button.customizeBtn1:hover {
+          background-color: #0056b3;
+        }
+
+        .error-message {
+            color: red;
+            text-align: center;
+          }
+
+          div {
+            display: inline-block;
+          }
+          div.adjust{
+            display: inline-block;
+            width: 40%;
+            margin: auto;
+            padding: auto;
+          }
+          div.adjust2{
+            display:block;
+          }
+
+          .sidebar {
+            position: fixed;
+            top: 280px;
+            right: 76px;
+            width: 200px;
+            background-color: #f9f9f9;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          }
+          
+          /* Adjust the main content area to make space for the sidebar */
+          .main-content {
+            margin-right: 220px; 
+          }
+          
+          /* Ensure the main content area remains scrollable */
+          .main-content-wrapper {
+            overflow-y:auto;
+            max-height: 100vh; 
+          }
+          p.total2{
+            font-size: 30px;
+          }
+      </style>
+    </head>
+    <body>
+      <h1>Customize Your PC</h1>
+
+      <form id="customizeForm" class="customizeForm" method="post" action="{% url 'core:confirm' %}">
+        {% csrf_token %}
+        <!--<button type="button" id="price-filter-cusbtn" class="customizeBtn1">Filter Products</button>-->
+        
+        <!-- Cooler selection -->
+        <div class="adjust">
+          <h2>Cooler:</h2>
+          <select id="coolerProduct">
+            <option value="">Select Product</option>
+          </select>
+        </div>
+
+        <!-- Graphics Card selection -->
+        <div class="adjust">
+          <h2>Graphics Card:</h2>
+          <select id="graphicCardProduct">
+            <option value="">Select Product</option>
+          </select>
+        </div>
+
+        <!-- Chassis Option selection -->
+        <div class="adjust">
+          <h2>Chassis Option:</h2>
+          <select id="chassisOptionProduct">
+            <option value="">Select Product</option>
+          </select>
+        </div>
+
+        <!-- Headset selection -->
+        <div class="adjust">
+          <h2>Headset:</h2>
+          <select id="headsetProduct">
+            <option value="">Select Product</option>
+          </select>
+        </div>
+
+        <!-- Keyboard selection -->
+        <div class="adjust">
+          <h2>Keyboard:</h2>
+          <select id="keyboardProduct">
+            <option value="">Select Product</option>
+          </select>
+        </div>
+
+        <!-- Monitor selection -->
+        <div class="adjust">
+          <h2>Monitor:</h2>
+          <select id="monitorProduct">
+            <option value="">Select Product</option>
+          </select>
+        </div>
+
+        <!-- Motherboard (AMD) selection -->
+        <div class="adjust">
+          <h2>Motherboard (AMD):</h2>
+          <select id="motherboardAmdProduct">
+            <option value="">Select Product</option>
+          </select>
+        </div>
+
+        <!-- Motherboard (Intel) selection -->
+        <div class="adjust">
+          <h2>Motherboard (Intel):</h2>
+          <select id="motherboardIntelProduct">
+            <option value="">Select Product</option>
+          </select>
+        </div>
+
+        <!-- Power Supply selection -->
+        <div class="adjust">
+          <h2>Power Supply:</h2>
+          <select id="powerSupplyProduct">
+            <option value="">Select Product</option>
+          </select>
+        </div>
+
+        <!-- Peripherals selection -->
+        <div class="adjust">
+          <h2>Peripherals:</h2>
+          <select id="peripheralsProduct">
+            <option value="">Select Product</option>
+          </select>
+        </div>
+
+        <!-- Operating System selection -->
+        <div class="adjust">
+          <h2>Operating System:</h2>
+          <select id="operatingSystemProduct">
+            <option value="">Select Product</option>
+          </select>
+        </div>
+
+        <!-- Processor (AMD) selection -->
+        <div class="adjust">
+          <h2>Processor (AMD):</h2>
+          <select id="processorAmdProduct">
+            <option value="">Select Product</option>
+          </select>
+        </div>
+
+        <!-- Processor (Intel) selection -->
+        <div class="adjust">
+          <h2>Processor (Intel):</h2>
+          <select id="processorIntelProduct">
+            <option value="">Select Product</option>
+          </select>
+        </div>
+
+        <!-- RAM selection -->
+        <div class="adjust">
+          <h2>RAM:</h2>
+          <select id="ramProduct">
+            <option value="">Select Product</option>
+          </select>
+        </div>
+
+        <!-- Webcam selection -->
+        <div class="adjust">
+          <h2>Webcam:</h2>
+          <select id="webcamProduct">
+            <option value="">Select Product</option>
+          </select>
+        </div>
+
+        <!-- Goods selection -->
+        <div class="adjust">
+          <h2>Goods:</h2>
+          <select id="goodsProduct">
+            <option value="">Select Product</option>
+          </select>
+        </div>
+
+        <!-- Budget display -->
+        <div id="budgetDisplay" class="adjust2">
+          Total Budget: RM<span id="totalBudget">0.00</span>
+        </div>
+        <!-- Add a div for the sidebar -->
+        <div class="sidebar" id="budgetDisplay">
+          <h2>Price:</h2>
+          <p id="totalBudget2" class="total2">RM 0.00</p>
+        </div>
+
+
+        <!-- Hidden input field to store selected products -->
+        <input type="hidden" name="products" id="selectedProducts" />
+
+        <!-- Button to confirm selections -->
+        <button type="submit" id="submitButton" class="customizeBtn" disabled>Proceed to Confirm</button>
+      </form>
+
+      <!-- Prompt message element -->
+      <p id="promptMessage" class="error-message">Please select a product before proceeding.</p>
+
+      <!-- Include any necessary JavaScript -->
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Function to check if any product is selected
+            function checkIfProductsSelected() {
+                const selectedProducts = document.querySelectorAll("select option:checked:not([value=''])");
+                return selectedProducts.length > 0;
+            }
+
+            // Function to enable/disable submit button based on product selection
+            function updateSubmitButton() {
+                const submitButton = document.getElementById("submitButton");
+                submitButton.disabled = !checkIfProductsSelected();
+            }
+
+            // Event listener for product dropdown change
+            document.querySelectorAll("select").forEach((select) => {
+                select.addEventListener("change", function () {
+                    updateSubmitButton();
+                });
+            });
+
+            // Event listener for form submission
+            document.getElementById("customizeForm").addEventListener("submit", function (event) {
+                if (!checkIfProductsSelected()) {
+                    event.preventDefault(); // Prevent form submission
+                    document.getElementById("promptMessage").style.display = "block"; // Display prompt message
+                }
+            });
+
+            // Initial check on page load
+            updateSubmitButton();
+        });
+        
+        document.addEventListener('DOMContentLoaded', function () {
+          // Function to populate product dropdown based on selected category
+          function populateProductDropdown(categoryId, dropdownId) {
+            fetch(`/api/products/${categoryId}/`)
+              .then((response) => response.json())
+              .then((data) => {
+                const productDropdown = document.getElementById(dropdownId)
+                productDropdown.innerHTML = '<option value="">Select Product</option>'
+                data.options.forEach((product) => {
+                  const option = document.createElement('option')
+                  option.value = product.value
+                  option.textContent = product.text
+                  option.dataset.price = product.price
+                  productDropdown.appendChild(option)
+                })
+                // After populating, restore selections if present
+                restoreSelections()
+              })
+              .catch((error) => console.error('Error:', error))
+          }
+        
+          // Function to calculate and update the total budget
+          function updateTotalBudget() {
+            let totalBudget = 0
+            // Sum the prices of all selected options
+            document.querySelectorAll('select option:checked:not([value=""])').forEach((option) => {
+              const productPrice = parseFloat(option.dataset.price)
+              totalBudget += productPrice
+            })
+            // Update the total budget displayed
+            document.getElementById('totalBudget').textContent = totalBudget.toFixed(2)
+          }
+        
+          // Function to store selected product IDs in local storage
+          function updateLocalStorage() {
+            const selectedProducts = Array.from(document.querySelectorAll('select option:checked')).map((option) => option.value)
+            localStorage.setItem('selectedProducts', JSON.stringify(selectedProducts))
+          }
+        
+          // Event listener for product dropdown change
+document.querySelectorAll('select').forEach((select) => {
+  select.addEventListener('change', function () {
+    const selectedProductIds = Array.from(document.querySelectorAll('select option:checked:not([value=""])')).map((option) => option.value);
+    document.getElementById('selectedProducts').value = JSON.stringify(selectedProductIds);
+    updateTotalBudget(); 
+    updateLocalStorage()
+  });
+});
+
+        
+          // Function to restore selections from local storage on page load
+          function restoreSelections() {
+            const storedSelections = JSON.parse(localStorage.getItem('selectedProducts'))
+            if (storedSelections) {
+              storedSelections.forEach((selectedValue, index) => {
+                const select = document.querySelectorAll('select')[index]
+                if (select) {
+                  select.value = selectedValue
+                  select.dispatchEvent(new Event('change')) // This will trigger updateTotalBudget
+                }
+              })
+            }
+          }
+        
+          // Populate all product dropdowns
+          populateProductDropdown(1, 'coolerProduct')
+          populateProductDropdown(2, 'graphicCardProduct')
+          populateProductDropdown(3, 'chassisOptionProduct')
+          populateProductDropdown(4, 'headsetProduct')
+          populateProductDropdown(5, 'keyboardProduct')
+          populateProductDropdown(6, 'monitorProduct')
+          populateProductDropdown(7, 'motherboardAmdProduct')
+          populateProductDropdown(8, 'motherboardIntelProduct')
+          populateProductDropdown(9, 'powerSupplyProduct')
+          populateProductDropdown(10, 'peripheralsProduct')
+          populateProductDropdown(11, 'operatingSystemProduct')
+          populateProductDropdown(12, 'processorAmdProduct')
+          populateProductDropdown(13, 'processorIntelProduct')
+          populateProductDropdown(14, 'ramProduct')
+          populateProductDropdown(15, 'webcamProduct')
+          populateProductDropdown(16, 'goodsProduct')
+        
+          // Event listener for price filter button
+          document.getElementById('price-filter-cusbtn').addEventListener('click', function () {
+            const maxPrice = document.getElementById('priceFilter').value
+        
+            // Fetch filtered products based on category and max price
+            fetch(`/api/products/$?max_price=${maxPrice}`)
+              .then((response) => response.json())
+              .then((data) => {
+                const productDropdown = document.getElementById('productDropdown')
+                productDropdown.innerHTML = '<option value="">Select Product</option>'
+                data.options.forEach((product) => {
+                  const option = document.createElement('option')
+                  option.value = product.value
+                  option.textContent = product.text
+                  option.dataset.price = product.price
+                  productDropdown.appendChild(option)
+                })
+              })
+              .catch((error) => console.error('Error:', error))
+          })
+        })
+      </script>
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          // Function to check if any product is selected
+          function checkIfProductsSelected() {
+              const selectedProducts = document.querySelectorAll("select option:checked:not([value=''])");
+              return selectedProducts.length > 0;
+          }
+
+          // Function to enable/disable submit button based on product selection
+          function updateSubmitButton() {
+              const submitButton = document.getElementById("submitButton");
+              submitButton.disabled = !checkIfProductsSelected();
+          }
+
+          // Event listener for product dropdown change
+          document.querySelectorAll("select").forEach((select) => {
+              select.addEventListener("change", function () {
+                  updateSubmitButton();
+              });
+          });
+
+          // Event listener for form submission
+          document.getElementById("customizeForm").addEventListener("submit", function (event) {
+              if (!checkIfProductsSelected()) {
+                  event.preventDefault(); // Prevent form submission
+                  document.getElementById("promptMessage").style.display = "block"; // Display prompt message
+              }
+          });
+
+          // Initial check on page load
+          updateSubmitButton();
+      });
+      
+      document.addEventListener('DOMContentLoaded', function () {
+        // Function to populate product dropdown based on selected category
+        function populateProductDropdown(categoryId, dropdownId) {
+          fetch(`/api/products/${categoryId}/`)
+            .then((response) => response.json())
+            .then((data) => {
+              const productDropdown = document.getElementById(dropdownId)
+              productDropdown.innerHTML = '<option value="">Select Product</option>'
+              data.options.forEach((product) => {
+                const option = document.createElement('option')
+                option.value = product.value
+                option.textContent = product.text
+                option.dataset.price = product.price
+                productDropdown.appendChild(option)
+              })
+              // After populating, restore selections if present
+              restoreSelections()
+            })
+            .catch((error) => console.error('Error:', error))
+        }
+      
+        // Function to calculate and update the total budget
+        function updateTotalBudget() {
+          let totalBudget = 0
+          // Sum the prices of all selected options
+          document.querySelectorAll('select option:checked:not([value=""])').forEach((option) => {
+            const productPrice = parseFloat(option.dataset.price)
+            totalBudget += productPrice
+          })
+          // Update the total budget displayed
+          document.getElementById('totalBudget2').textContent = totalBudget.toFixed(2)
+        }
+      
+        // Function to store selected product IDs in local storage
+        function updateLocalStorage() {
+          const selectedProducts = Array.from(document.querySelectorAll('select option:checked')).map((option) => option.value)
+          localStorage.setItem('selectedProducts', JSON.stringify(selectedProducts))
+        }
+      
+        // Event listener for product dropdown change
+document.querySelectorAll('select').forEach((select) => {
+select.addEventListener('change', function () {
+  const selectedProductIds = Array.from(document.querySelectorAll('select option:checked:not([value=""])')).map((option) => option.value);
+  document.getElementById('selectedProducts').value = JSON.stringify(selectedProductIds);
+  updateTotalBudget(); 
+  updateLocalStorage()
+});
+});
+
+      
+        // Function to restore selections from local storage on page load
+        function restoreSelections() {
+          const storedSelections = JSON.parse(localStorage.getItem('selectedProducts'))
+          if (storedSelections) {
+            storedSelections.forEach((selectedValue, index) => {
+              const select = document.querySelectorAll('select')[index]
+              if (select) {
+                select.value = selectedValue
+                select.dispatchEvent(new Event('change')) // This will trigger updateTotalBudget
+              }
+            })
+          }
+        }
+      
+        // Populate all product dropdowns
+        populateProductDropdown(1, 'coolerProduct')
+        populateProductDropdown(2, 'graphicCardProduct')
+        populateProductDropdown(3, 'chassisOptionProduct')
+        populateProductDropdown(4, 'headsetProduct')
+        populateProductDropdown(5, 'keyboardProduct')
+        populateProductDropdown(6, 'monitorProduct')
+        populateProductDropdown(7, 'motherboardAmdProduct')
+        populateProductDropdown(8, 'motherboardIntelProduct')
+        populateProductDropdown(9, 'powerSupplyProduct')
+        populateProductDropdown(10, 'peripheralsProduct')
+        populateProductDropdown(11, 'operatingSystemProduct')
+        populateProductDropdown(12, 'processorAmdProduct')
+        populateProductDropdown(13, 'processorIntelProduct')
+        populateProductDropdown(14, 'ramProduct')
+        populateProductDropdown(15, 'webcamProduct')
+        populateProductDropdown(16, 'goodsProduct')
+      
+        // Event listener for price filter button
+        document.getElementById('price-filter-cusbtn').addEventListener('click', function () {
+          const maxPrice = document.getElementById('priceFilter').value
+      
+          // Fetch filtered products based on category and max price
+          fetch(`/api/products/$?max_price=${maxPrice}`)
+            .then((response) => response.json())
+            .then((data) => {
+              const productDropdown = document.getElementById('productDropdown')
+              productDropdown.innerHTML = '<option value="">Select Product</option>'
+              data.options.forEach((product) => {
+                const option = document.createElement('option')
+                option.value = product.value
+                option.textContent = product.text
+                option.dataset.price = product.price
+                productDropdown.appendChild(option)
+              })
+            })
+            .catch((error) => console.error('Error:', error))
+        })
+      })
+      </script>
+    </body>
+  </html>
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+
+    <main class="main">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="{% url 'core:index' %}" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                    <span></span> Vendor <span></span> Vendor Details
+                </div>
+            </div>
+        </div>
+        <div class="container mb-30">
+            <div class="archive-header-3 mt-30 mb-80" style="background-image: url({{vendor.cover_image.url}})">
+                <div class="archive-header-3-inner">
+                    <div class="vendor-logo mr-50">
+                        <img src="{{ vendor.image.url }}" alt="" />
+                    </div>
+                    <div class="vendor-content">
+                        <div class="product-category">
+                            <span class="text-muted">Since 2012</span>
+                        </div>
+                        <h3 class="mb-5 text-white"><a class="text-white">{{vendor.title}}</a></h3>
+                        
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="vendor-des mb-15">
+                                    <p class="font-sm text-white">{{vendor.description}}</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="vendor-des mb-15">
+                                    <p><img class="font-sm text-white" src="{% static 'assets/imgs/theme/icons/icon-location.svg' %}" alt="" /><strong>Address: <br> </strong> <span> {{vendor.address}}</span></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="vendor-des mb-15">
+                                    <p><img class="font-sm text-white" src="{% static 'assets/imgs/theme/icons/icon-contact.svg' %}" alt="" /><strong>Call Us:</strong><span> {{vendor.contact}}</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row flex-row-reverse">
+                <div class="col-lg-4-5">
+                    <div class="shop-product-fillter">
+                        <div class="totall-product">
+                            <p>We found <strong class="text-brand">{{ products.count }}</strong> items for you!</p>
+                        </div>
+                    </div>
+                    <div class="product-list mb-50">
+                        {% for p in products %}
+                        <div class="product-cart-wrap">
+                            <div class="product-img-action-wrap">
+                                <div class="product-img product-img-zoom">
+                                    <div class="product-img-inner">
+                                        <a href="{% url 'core:product-detail' p.pid %}">
+                                            <img class="default-img" src="{{ p.image.url }}" alt="" />
+                                            <img class="hover-img" src="{{ p.image.url }}" alt="" />
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="product-badges product-badges-position product-badges-mrg">
+                                    <span class="hot">-{{ p.get_percentage|floatformat:0 }}%</span>
+                                </div>
+                            </div>
+                            <div class="product-content-wrap">
+                                <div class="product-category">
+                                    <a href="{% url 'core:product-detail' p.pid %}">{{ p.category.title }}</a>
+                                </div>
+                                <h2><a href="{% url 'core:product-detail' p.pid %}">{{ p.title|truncatechars:55 }}</a></h2>
+                                <div class="product-rate-cover">
+                                </div>
+                                <p class="mt-15 mb-15">{{ p.description }}</p>
+                                <div class="product-price">
+                                    <span>RM{{ p.price }}</span>
+                                    <span class="old-price">RM{{ p.old_price }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-lg-1-5 primary-sidebar sticky-sidebar">
+                    <div class="sidebar-widget widget-category-2 mb-30">
+                        <h5 class="section-title style-1 mb-30">Category</h5>
+                        <ul>
+                            {% for c in categories %}
+                            <li>
+                                <a href="{% url 'core:category-product-list' c.cid %}"> <img src="{{ c.image.url }}" alt="" />{{ c.title }}</a><span class="count">{{ c.category.all.count }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>   
+                </div>
+            </div>
+        </div>
+    </main>
+
+{% endblock content %}
